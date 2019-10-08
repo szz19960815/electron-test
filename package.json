@@ -1,0 +1,48 @@
+{
+  "name": "electron-webpack-quick-start",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null --icon='./static/icon.ico'"
+  },
+  "build": {
+    "productName": "electron-test",
+    "appId": "com.szz.electron-test",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "icon": "./static/icon.ico",
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true
+    }
+  },
+  "dependencies": {
+    "element-ui": "^2.11.1",
+    "source-map-support": "^0.5.12",
+    "vue-router": "^3.1.2"
+  },
+  "devDependencies": {
+    "electron": "6.0.10",
+    "electron-builder": "^21.2.0",
+    "electron-clipboardmanager": "^1.0.3",
+    "electron-webpack": "^2.7.4",
+    "electron-webpack-vue": "^2.3.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "vue": "^2.6.10",
+    "vue-cropper": "^0.4.9",
+    "vue-quill-editor": "^3.0.6",
+    "webpack": "~4.41.0"
+  }
+}
