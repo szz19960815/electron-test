@@ -26,13 +26,21 @@
     </div> -->
     <div>
       热更新：
-      <hot-update></hot-update>
+      <!-- <hot-update></hot-update> -->
       测试更新区域：
-      <update></update>
+      <!-- <update></update> -->
     </div>
     <div>
       窗口闪烁：
       <twinkle></twinkle>
+    </div>
+    <div>
+      新建webview
+      <create-view></create-view>
+    </div>
+    <div>
+      生成二维码
+      <create-qr></create-qr>
     </div>
   </div>
 </template>
@@ -41,21 +49,28 @@
 // electron依赖
 import { ipcRenderer, clipboard } from 'electron'
 //自定义组件
-import screenCapture from '../../components/screenCapture'
-import isTop from '../../components/isTop'
-import startUp from '../../components/startUp'
-import inputTest from '../../components//inputTest'
-import uploadFile from '../../components/uploadFile'
-import hotUpdate from '../../components/hotUpdate'
+import screenCapture from '../../components/home/screenCapture'
+import isTop from '../../components/home/isTop'
+import startUp from '../../components/home/startUp'
+import inputTest from '../../components/home//inputTest'
+import uploadFile from '../../components/home/uploadFile'
+import hotUpdate from '../../components/home/hotUpdate'
 import update from '../../update'
-import twinkle from '../../components/twinkle'
+import twinkle from '../../components/home/twinkle'
+import createView from '../../components/home/createView'
+import createQr from '../../components/home/createQr'
 
 export default {
   name: 'home',
-  components:{ screenCapture, isTop, startUp, inputTest, uploadFile, hotUpdate, update, twinkle },
+  components:{ screenCapture, isTop, startUp, inputTest, uploadFile, hotUpdate, update, twinkle, createView, createQr },
   data(){
     return {
       imgUrl: ''
+    }
+  },
+  methods:{
+    closeTask(){
+      ipcRenderer.send('closeTask')
     }
   },
   mounted(){

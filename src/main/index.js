@@ -1,5 +1,5 @@
 'use strict'
-import { app, BrowserWindow, ipcMain, globalShortcut, Tray, Menu } from 'electron'
+import { app, BrowserWindow, BrowserView, ipcMain, globalShortcut, Tray, Menu } from 'electron'
 import { execFile } from 'child_process'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
@@ -9,6 +9,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 let mainWindow
 // 托盘对象
 let appTray = null
+// webview对象
+let view
 // 阻止主进程多开
 const gotTheLock = app.requestSingleInstanceLock()
 if (!gotTheLock) {
@@ -23,8 +25,10 @@ if (!gotTheLock) {
   })
 }
 
-function createMainWindow() {
+// 新建窗口
+function createMainWindow () {
   const window = new BrowserWindow({
+    title: 'electronTest',
     width: 1024,
     height: 800,
     minWidth: 710,
@@ -52,7 +56,9 @@ function createMainWindow() {
   var trayMenuTemplate = [
     {
       label: '设置',
-      click: function () { } //打开相应页面
+      click: function () {
+
+      } //打开相应页面
     },
     {
       label: '帮助',
@@ -84,9 +90,30 @@ function createMainWindow() {
     window.show();
   })
 
-  window.on('closed', () => {
+  window.on('closed', (event) => {
     mainWindow = null
     appTray = null
+  })
+
+  // 最小化到系统托盘
+  window.on('close', (event) => {
+    mainWindow.hide();
+    // 是否显示任务栏图标
+    mainWindow.setSkipTaskbar(true);
+    event.preventDefault();
+  })
+
+  window.on('show', () => {
+    appTray.setHighlightMode('always')
+  })
+
+  window.on('hide', () => {
+    appTray.setHighlightMode('never')
+  })
+
+  // 最小化到任务栏
+  window.on('minimize', (event) => {
+    mainWindow.setSkipTaskbar(false);
   })
 
   window.webContents.on('devtools-opened', () => {
@@ -96,7 +123,35 @@ function createMainWindow() {
     })
   })
 
+  /**
+   * 修改启动模式为mobile
+   */
+  // window.webContents.enableDeviceEmulation({
+  //   screenPosition: 'mobile',
+  //   screenSize: { width: 480, height: 640 },
+  //   deviceScaleFactor: 0,
+  //   viewPosition: { x: 0, y: 0 },
+  //   viewSize: { width: 480, height: 640 },
+  //   fitToView: false,
+  //   offset: { x: 0, y: 0 }
+  // })
+
   return window
+}
+
+/**
+ * 新建webview
+ * @param {挂载的窗口对象} win 
+ * @param {相对窗口的横坐标} x 
+ * @param {相对窗口的纵坐标} y 
+ * @param {webview的宽带} width 
+ * @param {webview的高度} height 
+ */
+function createView (win, x, y, width, height) {
+  const view = new BrowserView()
+  win.setBrowserView(view)
+  view.setBounds({ x, y, width, height })
+  view.webContents.loadURL('http://www.baidu.com')
 }
 
 // quit application when all windows are closed
@@ -180,6 +235,11 @@ app.on('ready', () => {
     // 判断窗口是否可见
     // mainWindow.isVisible()
     mainWindow.flashFrame(true)
+  })
+
+  // 新建webview
+  ipcMain.on('createView', (e, val) => {
+    createView(mainWindow, 10, 10, 300, 300)
   })
 
   // 安装vue-devtool

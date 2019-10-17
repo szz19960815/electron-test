@@ -33,6 +33,7 @@
     "vue-router": "^3.1.2"
   },
   "devDependencies": {
+    "css-loader": "^3.2.0",
     "electron": "6.0.10",
     "electron-builder": "^21.2.0",
     "electron-clipboardmanager": "^1.0.3",
@@ -40,6 +41,7 @@
     "electron-webpack-vue": "^2.3.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
+    "qrcodejs2": "^0.0.2",
     "vue": "^2.6.10",
     "vue-cropper": "^0.4.9",
     "vue-quill-editor": "^3.0.6",

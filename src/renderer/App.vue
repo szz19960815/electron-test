@@ -35,8 +35,9 @@ export default {
 
 <style lang="less" scoped>
 #app{
-  padding-top: 30px;
+  padding: 30px 0;
   position: relative;
+  box-sizing: border-box;
   .tip{
     position: absolute;
     top: 0;
