@@ -148,10 +148,21 @@ function createMainWindow () {
  * @param {webview的高度} height 
  */
 function createView (win, x, y, width, height) {
-  const view = new BrowserView()
-  win.setBrowserView(view)
-  view.setBounds({ x, y, width, height })
-  view.webContents.loadURL('http://www.baidu.com')
+  win.openView = new BrowserView()
+  win.setBrowserView(win.openView)
+  win.openView.setBounds({ x, y, width, height })
+  win.openView.webContents.loadURL('http://www.baidu.com')
+}
+
+/**
+ * 关闭webview
+ */
+function removeView (win) {
+  // console.log(win)
+  console.log(win.openView)
+  if (!win.openView.isDestroyed()) {
+    win.openView.destroy()
+  }
 }
 
 // quit application when all windows are closed
@@ -240,6 +251,11 @@ app.on('ready', () => {
   // 新建webview
   ipcMain.on('createView', (e, val) => {
     createView(mainWindow, 10, 10, 300, 300)
+  })
+
+  // 关闭webview
+  ipcMain.on('removeView', (e, val) => {
+    removeView(mainWindow)
   })
 
   // 安装vue-devtool

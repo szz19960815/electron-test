@@ -1,6 +1,7 @@
 <template>
   <div id="createView">
     <button type="button" @click="create">新建webview</button>
+    <button type="button" @click="remove">关闭webview</button>
   </div>
 </template>
 
@@ -11,6 +12,9 @@ export default {
   methods: {
     create() {
       ipcRenderer.send('createView')
+    },
+    remove () {
+      ipcRenderer.send('removeView')
     }
   }
 }
