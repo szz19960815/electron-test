@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "css-loader": "^3.2.0",
-    "electron": "6.0.10",
+    "electron": "9.1.1",
     "electron-builder": "^21.2.0",
     "electron-clipboardmanager": "^1.0.3",
     "electron-webpack": "^2.7.4",
